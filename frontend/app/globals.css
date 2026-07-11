@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+:root {
+  /* OKLCH Color System - Committed Dark Dev Theme */
+  --bg: oklch(0.06 0 0); /* Pure pitch black base */
+  --surface: oklch(0.10 0.006 140); /* Deep panel, moss green tint */
+  --surface-border: oklch(0.16 0.01 140); /* Low contrast structural border */
+  --ink: oklch(0.98 0.005 140); /* Crisp high-contrast body text */
+  --muted: oklch(0.60 0.01 140); /* Muted readable labels */
+  --primary: oklch(0.72 0.10 140); /* Moss green brand anchor */
+  --accent: oklch(0.92 0.02 70); /* Pale bone highlights */
+
+  /* Agent Colors */
+  --agent-security: oklch(0.62 0.18 24); /* Security Red/Amber */
+  --agent-cost: oklch(0.75 0.18 140); /* Cost Neon Green */
+  --agent-feasibility: oklch(0.78 0.15 78); /* Feasibility Gold */
+  --agent-moderator: oklch(0.70 0.16 295); /* Moderator Purple */
+
+  /* Scrollbars & Selections */
+  color-scheme: dark;
+  background-color: var(--bg);
+  color: var(--ink);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-border-custom: var(--surface-border);
+  --color-ink: var(--ink);
+  --color-muted-custom: var(--muted);
+  --color-primary-custom: var(--primary);
+  --color-accent-custom: var(--accent);
+  
+  --color-security: var(--agent-security);
+  --color-cost: var(--agent-cost);
+  --color-feasibility: var(--agent-feasibility);
+  --color-moderator: var(--agent-moderator);
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Custom design system utilities */
+
+/* Glowing card shadows */
+.glow-security {
+  box-shadow: 0 0 30px -10px oklch(from var(--agent-security) l c h / 0.15),
+              inset 0 0 12px oklch(from var(--agent-security) l c h / 0.05);
+}
+
+.glow-cost {
+  box-shadow: 0 0 30px -10px oklch(from var(--agent-cost) l c h / 0.15),
+              inset 0 0 12px oklch(from var(--agent-cost) l c h / 0.05);
+}
+
+.glow-feasibility {
+  box-shadow: 0 0 30px -10px oklch(from var(--agent-feasibility) l c h / 0.15),
+              inset 0 0 12px oklch(from var(--agent-feasibility) l c h / 0.05);
+}
+
+.glow-moderator {
+  box-shadow: 0 0 30px -10px oklch(from var(--agent-moderator) l c h / 0.15),
+              inset 0 0 12px oklch(from var(--agent-moderator) l c h / 0.05);
+}
+
+/* Technical scanning beam effect */
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  animation: scan 3s linear infinite;
+  opacity: 0.3;
+}
+
+/* Typing cursor animation */
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: "▊";
+  color: var(--primary);
+  animation: blink 1s step-start infinite;
+}
+
+/* Integration marquee animations */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 20s linear infinite;
+}
+
+/* Reduced motion adjustments */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+  .scan-line {
+    display: none;
+  }
+}
+
+/* Custom Scrollbar styled for the dark moss green theme */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--surface-border);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+/* Firefox Support */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-border) rgba(0, 0, 0, 0.2);
+}
