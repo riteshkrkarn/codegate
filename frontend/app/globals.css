@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  /* OKLCH Color System - Committed Dark Dev Theme */
-  --bg: oklch(0.06 0 0); /* Pure pitch black base */
-  --surface: oklch(0.10 0.006 140); /* Deep panel, moss green tint */
-  --surface-border: oklch(0.16 0.01 140); /* Low contrast structural border */
-  --ink: oklch(0.98 0.005 140); /* Crisp high-contrast body text */
-  --muted: oklch(0.60 0.01 140); /* Muted readable labels */
-  --primary: oklch(0.72 0.10 140); /* Moss green brand anchor */
-  --accent: oklch(0.92 0.02 70); /* Pale bone highlights */
+  /* Strict black / white theme — chroma 0 throughout */
+  --bg: oklch(0 0 0); /* Primary: pure black */
+  --surface: oklch(0.1 0 0); /* Near-black panels */
+  --surface-border: oklch(0.28 0 0); /* White at low luminance = structural rules */
+  --ink: oklch(1 0 0); /* Secondary: pure white body */
+  --muted: oklch(0.72 0 0); /* Readable gray (≥4.5:1 on black) */
+  --primary: oklch(0 0 0); /* Brand primary = black */
+  --secondary: oklch(1 0 0); /* Brand secondary = white */
+  --accent: oklch(1 0 0); /* Alias: emphasis = white */
 
-  /* Agent Colors */
-  --agent-security: oklch(0.62 0.18 24); /* Security Red/Amber */
-  --agent-cost: oklch(0.75 0.18 140); /* Cost Neon Green */
-  --agent-feasibility: oklch(0.78 0.15 78); /* Feasibility Gold */
-  --agent-moderator: oklch(0.70 0.16 295); /* Moderator Purple */
+  /* Agent states: weight/opacity only — no hue */
+  --agent-security: oklch(1 0 0);
+  --agent-cost: oklch(0.88 0 0);
+  --agent-feasibility: oklch(0.78 0 0);
+  --agent-moderator: oklch(0.95 0 0);
 
-  /* Scrollbars & Selections */
   color-scheme: dark;
   background-color: var(--bg);
   color: var(--ink);
@@ -29,8 +29,9 @@
   --color-ink: var(--ink);
   --color-muted-custom: var(--muted);
   --color-primary-custom: var(--primary);
+  --color-secondary-custom: var(--secondary);
   --color-accent-custom: var(--accent);
-  
+
   --color-security: var(--agent-security);
   --color-cost: var(--agent-cost);
   --color-feasibility: var(--agent-feasibility);
@@ -50,60 +51,58 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Custom design system utilities */
-
-/* Glowing card shadows */
-.glow-security {
-  box-shadow: 0 0 30px -10px oklch(from var(--agent-security) l c h / 0.15),
-              inset 0 0 12px oklch(from var(--agent-security) l c h / 0.05);
+/* Active focus: white edge glow only */
+.glow-active {
+  box-shadow: 0 0 28px -8px oklch(1 0 0 / 0.22),
+    inset 0 0 12px oklch(1 0 0 / 0.04);
 }
 
-.glow-cost {
-  box-shadow: 0 0 30px -10px oklch(from var(--agent-cost) l c h / 0.15),
-              inset 0 0 12px oklch(from var(--agent-cost) l c h / 0.05);
-}
-
-.glow-feasibility {
-  box-shadow: 0 0 30px -10px oklch(from var(--agent-feasibility) l c h / 0.15),
-              inset 0 0 12px oklch(from var(--agent-feasibility) l c h / 0.05);
-}
-
+.glow-security,
+.glow-cost,
+.glow-feasibility,
 .glow-moderator {
-  box-shadow: 0 0 30px -10px oklch(from var(--agent-moderator) l c h / 0.15),
-              inset 0 0 12px oklch(from var(--agent-moderator) l c h / 0.05);
+  box-shadow: 0 0 28px -8px oklch(1 0 0 / 0.18),
+    inset 0 0 10px oklch(1 0 0 / 0.04);
 }
 
-/* Technical scanning beam effect */
 @keyframes scan {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
 }
 
 .scan-line {
   position: absolute;
   left: 0;
   right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--secondary), transparent);
   animation: scan 3s linear infinite;
-  opacity: 0.3;
+  opacity: 0.35;
 }
 
-/* Typing cursor animation */
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
 .cursor-blink::after {
   content: "▊";
-  color: var(--primary);
+  color: var(--secondary);
   animation: blink 1s step-start infinite;
 }
 
-/* Integration marquee animations */
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {
@@ -112,9 +111,10 @@ body {
   animation: marquee 20s linear infinite;
 }
 
-/* Reduced motion adjustments */
 @media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
+  *,
+  ::before,
+  ::after {
     animation-delay: -1ms !important;
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
@@ -128,29 +128,26 @@ body {
   }
 }
 
-/* Custom Scrollbar styled for the dark moss green theme */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
+  background: oklch(0 0 0 / 0.4);
+  border-radius: 0;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: var(--surface-border);
-  border-radius: 3px;
+  border-radius: 0;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-  box-shadow: 0 0 8px var(--primary);
+  background: oklch(0.55 0 0);
 }
 
-/* Firefox Support */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: var(--surface-border) rgba(0, 0, 0, 0.2);
+  scrollbar-color: var(--surface-border) oklch(0 0 0 / 0.4);
 }
